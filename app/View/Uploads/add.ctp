@@ -1,15 +1,33 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script type="text/javascript">
+
+   var get_form_fields = function($id) { 
+       
+       var baseUrl = '<?php echo $this->Html->url("/uploads/get_fields/") ?>';
+       var targetUrl = baseUrl + $id;
+       console.log(targetUrl);
+       $('#custom').load(targetUrl);
+   };
+   
+   $(function(){ 
+       get_form_fields($('#UploadCategoryId').val());
+   });  
+   
+ </script>
+ <div id='call'></div>
+ 
+ 
 <div class="uploads form">
 <?php echo $this->Form->create('Upload'); ?>
 	<fieldset>
 		<legend><?php echo __('Add Upload'); ?></legend>
-	<?php
+	<?php           
 		echo $this->Form->input('name');
 		echo $this->Form->input('type');
-		echo $this->Form->input('bytes');
-        echo $this->Form->input('Upload.fps');
-        echo $this->Form->input('Upload.bitrate');
-        echo $this->Form->input('Upload.rating', array('options' => array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
+		echo $this->Form->input('category_id',array('onchange'=>'get_form_fields(this.value);'));      
 	?>
+    <div id='custom'>
+        </div>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>
 </div>

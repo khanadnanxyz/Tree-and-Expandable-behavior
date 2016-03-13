@@ -36,5 +36,20 @@ public $actsAs = array(
 			'counterQuery' => ''
 		)
 	);
+    
+    /**
+ * belongsTo associations
+ *
+ * @var array
+ */
+	public $belongsTo = array(
+		'Category' => array(
+			'className' => 'Category',
+			'foreignKey' => 'category_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		)
+	);
 
 }

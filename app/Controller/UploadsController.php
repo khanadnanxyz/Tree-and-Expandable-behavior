@@ -8,12 +8,16 @@ App::uses('AppController', 'Controller');
  */
 class UploadsController extends AppController {
 
+
+
+    var $uses = array('Category','CustomField','Upload');
+
 /**
  * Components
  *
  * @var array
  */
-	public $components = array('Paginator');
+	public $components = array('Paginator','RequestHandler');
 
 /**
  * index method
@@ -48,14 +52,33 @@ class UploadsController extends AppController {
 	public function add() {
 		if ($this->request->is('post')) {
 			$this->Upload->create();
+            
+            $this->p($this->request->data);
 			if ($this->Upload->save($this->request->data)) {
+               
 				$this->Session->setFlash(__('The upload has been saved.'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__('The upload could not be saved. Please, try again.'));
 			}
 		}
+         
+         
+         $categories = $this->Category->find('list');
+		 $this->set(compact('categories'));
+        
 	}
+        
+    //ajax request for custome field    
+    public function get_fields($category_id){
+            $this->response->type('json'); 
+   	        $custome_fields = $this->CustomField->get_custome_fields($category_id);        
+            $response = json_encode($custome_fields);
+            $this->response->body($response);
+            $this->render('custom');
+           // $this->p($custome_fields);
+            $this->set('custome_fields', $custome_fields);
+    }
 
 /**
  * edit method
